@@ -1,0 +1,7 @@
+{
+  "name": "mist-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
