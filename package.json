@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "scripts": {
+        "ionic": "[ `node -v` = \"v16.20.2\" ] && ~/.nvm/nvm use node; npx ionic serve",
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
