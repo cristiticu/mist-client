@@ -18,10 +18,12 @@ export default function GamesList() {
                 {showList && (
                     <IonList>
                         {games.map((game) => (
-                            <IonItem key={game.id}>
+                            <IonItem
+                                key={game.id}
+                                routerLink={`/games/${game.id}`}
+                            >
                                 <IonThumbnail
                                     className="item-thumbnail"
-                                    style={{ '--size': '' }}
                                     slot="start"
                                 >
                                     <img
