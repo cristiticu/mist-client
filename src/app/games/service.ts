@@ -30,8 +30,18 @@ export const gamesApi = createApi({
                     await cacheDataLoaded;
 
                     const listener = (event: MessageEvent) => {
-                        if (typeof event.data === 'string' && event.data === '0xAA') {
+                        const message = JSON.parse(event.data);
+
+                        if (message.type === 'notification') {
                             dispatch(gamesApi.util.invalidateTags([{ type: 'Game', id: '*' }]));
+                        }
+
+                        if (message.type === 'heartbeat') {
+                            webSocket.send(
+                                JSON.stringify({
+                                    type: 'heartbeat',
+                                })
+                            );
                         }
                     };
 
