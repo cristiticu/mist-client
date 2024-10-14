@@ -1,13 +1,13 @@
+import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import GamesList from '../GamesList';
 
-export default function Home() {
+export default function GamesListPage() {
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Home</IonTitle>
+                    <IonTitle>Games</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
@@ -16,7 +16,7 @@ export default function Home() {
                         <IonTitle size="large">Blank</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <ExploreContainer />
+                <GamesList />
             </IonContent>
         </IonPage>
     );

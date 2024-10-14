@@ -57,3 +57,5 @@ export const gamesApi = createApi({
         }),
     }),
 });
+
+export const { useFetchAllGamesQuery, useFetchGameQuery } = gamesApi;

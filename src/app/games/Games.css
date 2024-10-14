@@ -1,0 +1,10 @@
+.games-list-card {
+    .item-thumbnail {
+        width: 16em;
+        height: 8em;
+    }
+
+    .item-title {
+        font-size: 1.5em;
+    }
+}

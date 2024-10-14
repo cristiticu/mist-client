@@ -6,6 +6,7 @@ export type Game = {
     added_at: string;
     positive_reviews: number;
     negative_reviews: number;
+    image_src?: string;
 };
 
 export type FetchGameParams = {
