@@ -17,6 +17,9 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import GamesListPage from './games/routes/GamesListPage';
 import GameDetailsPage from './games/routes/GameDetailsPage';
+import PrivateRoute from './auth/PrivateRoute';
+import MyGamesPage from './user/routes/MyGamesPage';
+import LoginPage from './auth/routes/LoginPage';
 
 setupIonicReact();
 
@@ -28,8 +31,8 @@ export default function App() {
                     <Route
                         exact
                         path="/"
+                        render={() => <Redirect to="/games" />}
                     />
-                    <Redirect to="/games" />
                     <Route
                         exact
                         path="/games"
@@ -39,6 +42,20 @@ export default function App() {
                         exact
                         path="/games/:id"
                         component={GameDetailsPage}
+                    />
+                    <Route
+                        exact
+                        path="/auth/login"
+                        component={LoginPage}
+                    />
+                    <Route
+                        exact
+                        path="/library"
+                        render={() => (
+                            <PrivateRoute>
+                                <MyGamesPage />
+                            </PrivateRoute>
+                        )}
                     />
                 </IonRouterOutlet>
             </IonReactRouter>

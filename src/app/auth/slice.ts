@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState } from './types';
+import { Preferences } from '@capacitor/preferences';
 
 const initialState: AuthState = {
     token: '',
@@ -11,6 +12,7 @@ export const authSlice = createSlice({
     reducers: {
         login: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
+            Preferences.set({ key: 'user', value: action.payload });
         },
 
         logout: (state) => {

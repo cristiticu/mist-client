@@ -1,25 +1,19 @@
-import React from 'react';
 import { IonPage, IonContent } from '@ionic/react';
-import { RouteComponentProps } from 'react-router-dom';
-import GameDetails from '../GameDetails';
+import MyGamesList from '../MyGamesList';
 import Menu from '../../shared/Menu';
 import Header from '../../shared/Header';
 
-type Props = RouteComponentProps<{
-    id: string;
-}>;
-
-export default function GameDetailsPage({ match }: Props) {
+export default function MyGamesPage() {
     return (
         <>
             <Menu />
             <IonPage id="main-content">
                 <Header
                     showLogin
-                    title="Details"
+                    title="Library"
                 />
                 <IonContent fullscreen>
-                    <GameDetails id={match.params.id} />
+                    <MyGamesList />
                 </IonContent>
             </IonPage>
         </>

@@ -1,23 +1,22 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import GamesList from '../GamesList';
+import Menu from '../../shared/Menu';
+import Header from '../../shared/Header';
 
 export default function GamesListPage() {
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Games</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-                <IonHeader collapse="condense">
-                    <IonToolbar>
-                        <IonTitle size="large">Blank</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
-                <GamesList />
-            </IonContent>
-        </IonPage>
+        <>
+            <Menu />
+            <IonPage id="main-content">
+                <Header
+                    showLogin
+                    title="Store"
+                />
+                <IonContent fullscreen>
+                    <GamesList />
+                </IonContent>
+            </IonPage>
+        </>
     );
 }
