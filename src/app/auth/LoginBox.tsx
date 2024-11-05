@@ -14,9 +14,7 @@ export default function LoginBox() {
         try {
             await login({ username, password });
             push('/library');
-        } catch (error) {
-        } finally {
-        }
+        } catch (error) {}
     };
 
     return (
