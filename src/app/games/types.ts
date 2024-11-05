@@ -12,3 +12,8 @@ export type Game = {
 export type FetchGameParams = {
     id: string;
 };
+
+export type FetchGamesParams = {
+    limit: number;
+    offset: number;
+};

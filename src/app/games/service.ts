@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_BASE_URL, BACKEND_WEBSOCKET_URL } from '../../config';
-import { FetchGameParams, Game } from './types';
+import { FetchGameParams, FetchGamesParams, Game } from './types';
 
 export const gamesApi = createApi({
     reducerPath: 'gamesApi',
@@ -12,45 +12,62 @@ export const gamesApi = createApi({
     tagTypes: ['Game'],
 
     endpoints: (builder) => ({
-        fetchAllGames: builder.query<Game[], void>({
-            query: () => {
+        fetchGames: builder.query<Game[], FetchGamesParams>({
+            query: (args) => {
+                const { limit, offset } = args;
                 return {
                     method: 'GET',
-                    url: '/games',
+                    url: `/games?limit=${limit}&offset=${offset}`,
                 };
             },
 
             providesTags: (result, error, args) => [{ type: 'Game', id: '*' }],
 
-            onCacheEntryAdded: async (args, api) => {
-                const { cacheDataLoaded, cacheEntryRemoved, dispatch } = api;
-                const webSocket = new WebSocket(`${BACKEND_WEBSOCKET_URL}/games`);
+            // serializeQueryArgs: () => {
+            //     return '';
+            // },
 
-                try {
-                    await cacheDataLoaded;
+            // forceRefetch: ({ currentArg, previousArg }) => {
+            //     if (!currentArg || !previousArg) {
+            //         return true;
+            //     }
 
-                    const listener = (event: MessageEvent) => {
-                        const message = JSON.parse(event.data);
+            //     return currentArg.offset > previousArg.offset;
+            // },
 
-                        if (message.type === 'notification') {
-                            dispatch(gamesApi.util.invalidateTags([{ type: 'Game', id: '*' }]));
-                        }
+            // merge: (currentCacheData, responseData) => {
+            //     return currentCacheData.concat(responseData);
+            // },
 
-                        if (message.type === 'heartbeat') {
-                            webSocket.send(
-                                JSON.stringify({
-                                    type: 'heartbeat',
-                                })
-                            );
-                        }
-                    };
+            // onCacheEntryAdded: async (args, api) => {
+            //     const { cacheDataLoaded, cacheEntryRemoved, dispatch } = api;
+            //     const webSocket = new WebSocket(`${BACKEND_WEBSOCKET_URL}/games`);
 
-                    webSocket.addEventListener('message', listener);
-                } catch (error) {}
+            //     try {
+            //         await cacheDataLoaded;
 
-                await cacheEntryRemoved;
-                webSocket.close();
-            },
+            //         const listener = (event: MessageEvent) => {
+            //             const message = JSON.parse(event.data);
+
+            //             if (message.type === 'notification') {
+            //                 dispatch(gamesApi.util.invalidateTags([{ type: 'Game', id: '*' }]));
+            //             }
+
+            //             if (message.type === 'heartbeat') {
+            //                 webSocket.send(
+            //                     JSON.stringify({
+            //                         type: 'heartbeat',
+            //                     })
+            //                 );
+            //             }
+            //         };
+
+            //         webSocket.addEventListener('message', listener);
+            //     } catch (error) {}
+
+            //     await cacheEntryRemoved;
+            //     webSocket.close();
+            // },
         }),
 
         fetchGame: builder.query<Game, FetchGameParams>({
@@ -68,4 +85,4 @@ export const gamesApi = createApi({
     }),
 });
 
-export const { useFetchAllGamesQuery, useFetchGameQuery } = gamesApi;
+export const { useFetchGamesQuery, useFetchGameQuery } = gamesApi;

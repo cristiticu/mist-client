@@ -1,13 +1,27 @@
 import './Games.css';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonList, IonThumbnail } from '@ionic/react';
-import React from 'react';
-import { useFetchAllGamesQuery } from './service';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonList, IonThumbnail } from '@ionic/react';
+import React, { useState } from 'react';
+import { useFetchGamesQuery } from './service';
 
 export default function GamesList() {
-    const { data: games, isLoading: isLoadingGames, isSuccess: isFetchGamesSuccess, isError: isFetchGamesError } = useFetchAllGamesQuery();
+    const [currentOffset, setCurrentOffset] = useState<number>(0);
+    const {
+        data: games,
+        isFetching: isFetchingGames,
+        isSuccess: isFetchGamesSuccess,
+        isError: isFetchGamesError,
+    } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
 
-    const showList = games && isFetchGamesSuccess;
+    const showList = games && !isFetchingGames && isFetchGamesSuccess;
     const showError = isFetchGamesError;
+
+    const handlePageClicked = (direction: 'next' | 'previous') => {
+        if (direction === 'next') {
+            setCurrentOffset(currentOffset + 5);
+        } else {
+            setCurrentOffset(currentOffset - 5);
+        }
+    };
 
     return (
         <IonCard className="games-list-card">
@@ -36,6 +50,18 @@ export default function GamesList() {
                         ))}
                     </IonList>
                 )}
+                <IonButton
+                    disabled={currentOffset <= 0}
+                    onClick={() => handlePageClicked('previous')}
+                >
+                    Previous
+                </IonButton>
+                <IonButton
+                    disabled={games && games.length < 5}
+                    onClick={() => handlePageClicked('next')}
+                >
+                    Next
+                </IonButton>
             </IonCardContent>
         </IonCard>
     );

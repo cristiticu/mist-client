@@ -13,7 +13,7 @@ export default function LoginBox() {
     const handleLogin = async () => {
         try {
             await login({ username, password });
-            push('/library', 'forward', 'replace');
+            push('/library');
         } catch (error) {
         } finally {
         }
