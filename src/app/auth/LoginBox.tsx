@@ -12,7 +12,7 @@ export default function LoginBox() {
 
     const handleLogin = async () => {
         try {
-            await login({ username, password });
+            await login({ username, password }).unwrap();
             push('/library');
         } catch (error) {}
     };

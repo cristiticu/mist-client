@@ -1,4 +1,3 @@
-import React from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 import { RouteComponentProps } from 'react-router-dom';
 import GameDetails from '../GameDetails';

@@ -1,4 +1,3 @@
-import React from 'react';
 import dayjs from 'dayjs';
 import { useFetchGameQuery } from './service';
 import {
@@ -6,31 +5,31 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonList,
     IonItem,
     IonThumbnail,
     IonLabel,
-    IonItemDivider,
     IonButton,
-    useIonRouter,
     IonLoading,
+    IonToast,
+    useIonRouter,
 } from '@ionic/react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { useAddUserGameMutation } from '../user/service';
+import { useAppSelector } from '../store';
+import { useFetchUserGamesQuery } from '../user/service';
+import useAddUserGameWithRetry from '../user/hooks/useAddUserGameWithRetry';
 
 type Props = {
     id: string;
 };
 
 export default function GameDetails({ id }: Props) {
-    const token = useSelector((state: RootState) => state.auth.token);
     const { push } = useIonRouter();
-    const { data: game, isSuccess: isFetchGameSuccess, isError: isFetchGameError } = useFetchGameQuery({ id });
-    const [addGame, { isLoading: isAddingGame }] = useAddUserGameMutation();
+    const token = useAppSelector((state) => state.auth.token);
+    const { data: userGames } = useFetchUserGamesQuery(undefined, { skip: !token });
+    const { data: game } = useFetchGameQuery({ id });
+    const { addUserGame, isAddingGame, error } = useAddUserGameWithRetry();
 
-    const showDetails = game && isFetchGameSuccess;
-    const showError = isFetchGameError;
+    const showDetails = !!game;
+    const userHasGame = !!userGames && !!userGames.find((game) => game.id === id);
 
     const handleBuyClicked = async () => {
         if (!token) {
@@ -38,9 +37,7 @@ export default function GameDetails({ id }: Props) {
             return;
         }
 
-        try {
-            await addGame({ gameId: id });
-        } catch (error) {}
+        addUserGame(id);
     };
 
     return (
@@ -79,8 +76,17 @@ export default function GameDetails({ id }: Props) {
                         <IonItem>
                             <IonLabel className="item-title">Added {dayjs(game.added_at).format('DD MMM YYYY')}</IonLabel>
                         </IonItem>
-                        <IonButton onClick={handleBuyClicked}>Buy</IonButton>
+                        <IonButton
+                            disabled={userHasGame}
+                            onClick={handleBuyClicked}
+                        >
+                            {userHasGame ? 'In library' : 'Purchase'}
+                        </IonButton>
                         <IonLoading isOpen={isAddingGame} />
+                        <IonToast
+                            isOpen={error}
+                            message="An error has occurred! The game was not bought. Retrying.."
+                        />
                     </IonCardContent>
                 </IonCard>
             )}

@@ -2,10 +2,9 @@ import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem,
 import { useFetchUserGamesQuery } from './service';
 
 export default function MyGamesList() {
-    const { data: games, isLoading: isLoadingGames, isSuccess: isFetchGamesSuccess, isError: isFetchGamesError } = useFetchUserGamesQuery();
+    const { data: games, isLoading: isLoadingGames } = useFetchUserGamesQuery();
 
-    const showList = games && isFetchGamesSuccess;
-    const showError = isFetchGamesError;
+    const showList = games && !isLoadingGames;
     return (
         <IonCard className="games-list-card">
             <IonCardHeader>

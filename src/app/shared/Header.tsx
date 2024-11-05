@@ -1,8 +1,7 @@
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonButton, IonTitle, IonBadge, IonItem, IonLabel } from '@ionic/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
 import logout from '../auth/utils/logout';
 import { useNetwork } from './hooks/useNetwork';
+import { useAppSelector } from '../store';
 
 type Props = {
     title: string;
@@ -10,7 +9,7 @@ type Props = {
 };
 
 export default function Header({ title, showLogin }: Props) {
-    const token = useSelector((state: RootState) => state.auth.token);
+    const token = useAppSelector((state) => state.auth.token);
     const networkStatus = useNetwork();
 
     const isAuthenticated = !!token;

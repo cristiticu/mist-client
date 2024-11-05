@@ -1,4 +1,4 @@
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonButton, IonMenuToggle } from '@ionic/react';
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonMenuToggle } from '@ionic/react';
 
 export default function Menu() {
     return (

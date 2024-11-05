@@ -18,7 +18,7 @@ export const userApi = createApi({
 
     endpoints: (builder) => ({
         fetchUserGames: builder.query<Game[], void>({
-            query: (args) => {
+            query: () => {
                 return {
                     method: 'GET',
                     url: '/user/my-games',

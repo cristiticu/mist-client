@@ -1,19 +1,13 @@
 import './Games.css';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonList, IonThumbnail } from '@ionic/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFetchGamesQuery } from './service';
 
 export default function GamesList() {
     const [currentOffset, setCurrentOffset] = useState<number>(0);
-    const {
-        data: games,
-        isFetching: isFetchingGames,
-        isSuccess: isFetchGamesSuccess,
-        isError: isFetchGamesError,
-    } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
+    const { data: games } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
 
-    const showList = games && !isFetchingGames && isFetchGamesSuccess;
-    const showError = isFetchGamesError;
+    const showList = games;
 
     const handlePageClicked = (direction: 'next' | 'previous') => {
         if (direction === 'next') {
