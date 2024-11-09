@@ -1,62 +1,33 @@
 import './Games.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonList, IonThumbnail } from '@ionic/react';
-import { useState } from 'react';
-import { useFetchGamesQuery } from './service';
+import { Fragment } from 'react';
+import { IonItem, IonLabel, IonList, IonThumbnail } from '@ionic/react';
+import { Game } from './types';
 
-export default function GamesList() {
-    const [currentOffset, setCurrentOffset] = useState<number>(0);
-    const { data: games } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
+type Props = {
+    games: Game[];
+};
 
-    const showList = games;
-
-    const handlePageClicked = (direction: 'next' | 'previous') => {
-        if (direction === 'next') {
-            setCurrentOffset(currentOffset + 5);
-        } else {
-            setCurrentOffset(currentOffset - 5);
-        }
-    };
-
+export default function GamesList({ games }: Props) {
     return (
-        <IonCard className="games-list-card">
-            <IonCardHeader>
-                <IonCardTitle>Available games</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-                {showList && (
-                    <IonList>
-                        {games.map((game) => (
-                            <IonItem
-                                key={game.id}
-                                routerLink={`/games/${game.id}`}
-                            >
-                                <IonThumbnail
-                                    className="item-thumbnail"
-                                    slot="start"
-                                >
-                                    <img
-                                        alt=""
-                                        src={game.image_src}
-                                    />
-                                </IonThumbnail>
-                                <IonLabel className="item-title">{game.title}</IonLabel>
-                            </IonItem>
-                        ))}
-                    </IonList>
-                )}
-                <IonButton
-                    disabled={currentOffset <= 0}
-                    onClick={() => handlePageClicked('previous')}
-                >
-                    Previous
-                </IonButton>
-                <IonButton
-                    disabled={games && games.length < 5}
-                    onClick={() => handlePageClicked('next')}
-                >
-                    Next
-                </IonButton>
-            </IonCardContent>
-        </IonCard>
+        <IonList>
+            {games.map((game) => (
+                <Fragment key={game.id}>
+                    <IonItem routerLink={`/games/${game.id}`}>
+                        <IonThumbnail
+                            className="item-thumbnail"
+                            slot="start"
+                        >
+                            <img
+                                alt=""
+                                src={game.image_src}
+                            />
+                        </IonThumbnail>
+                    </IonItem>
+                    <IonItem routerLink={`/games/${game.id}`}>
+                        <IonLabel className="item-title">{game.title}</IonLabel>
+                    </IonItem>
+                </Fragment>
+            ))}
+        </IonList>
     );
 }

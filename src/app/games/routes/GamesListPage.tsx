@@ -1,7 +1,7 @@
 import { IonContent, IonPage } from '@ionic/react';
-import GamesList from '../GamesList';
 import Menu from '../../shared/Menu';
 import Header from '../../shared/Header';
+import StoreGames from '../StoreGames';
 
 export default function GamesListPage() {
     return (
@@ -13,7 +13,7 @@ export default function GamesListPage() {
                     title="Store"
                 />
                 <IonContent fullscreen>
-                    <GamesList />
+                    <StoreGames />
                 </IonContent>
             </IonPage>
         </>
