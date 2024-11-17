@@ -12,17 +12,18 @@ import {
     IonLoading,
     IonToast,
     useIonRouter,
+    IonImg,
 } from '@ionic/react';
 import { useAppSelector } from '../store';
 import { useFetchOwnedGamesQuery } from '../licenses/service';
-import useAddOwnedGameWithRetry from '../licenses/hooks/useAddOwnedGameWithRetry';
 import { useState } from 'react';
+import useAddLicenseWithRetry from '../licenses/hooks/useAddLicenseWithRetry';
 
 type Props = {
-    id: string;
+    gameId: string;
 };
 
-export default function GameDetails({ id }: Props) {
+export default function GameDetails({ gameId }: Props) {
     const { push } = useIonRouter();
     const [errorDismissed, setErrorDismissed] = useState<boolean>(false);
     const [successDismissed, setSuccessDismissed] = useState<boolean>(false);
@@ -30,9 +31,9 @@ export default function GameDetails({ id }: Props) {
     const token = useAppSelector((state) => state.auth.token);
 
     const { data: ownedGames } = useFetchOwnedGamesQuery(undefined, { skip: !token });
-    const { data: game } = useFetchGameQuery({ id });
+    const { data: game } = useFetchGameQuery({ id: gameId });
 
-    const { addUserGame, isAddingGame, error, success } = useAddOwnedGameWithRetry();
+    const { addLicense, isAddingGame, error, success } = useAddLicenseWithRetry();
 
     const handleBuyClicked = async () => {
         if (!token) {
@@ -40,11 +41,11 @@ export default function GameDetails({ id }: Props) {
             return;
         }
 
-        addUserGame(id);
+        addLicense(gameId);
     };
 
     const showDetails = !!game;
-    const userHasGame = !!ownedGames && !!ownedGames.find((game) => game.id === id);
+    const ownedGame = ownedGames?.find((game) => game.id === gameId);
 
     return (
         <>
@@ -59,9 +60,9 @@ export default function GameDetails({ id }: Props) {
                                 className="item-thumbnail"
                                 slot="start"
                             >
-                                <img
+                                <IonImg
                                     alt=""
-                                    src={game.image_src}
+                                    src={game.image_src || undefined}
                                 />
                             </IonThumbnail>
                         </IonItem>
@@ -80,10 +81,10 @@ export default function GameDetails({ id }: Props) {
                             <IonLabel className="item-title">Added {dayjs(game.added_at).format('DD MMM YYYY')}</IonLabel>
                         </IonItem>
                         <IonButton
-                            disabled={userHasGame || error}
+                            disabled={!!ownedGame || error}
                             onClick={handleBuyClicked}
                         >
-                            {userHasGame ? 'In library' : 'Purchase'}
+                            {ownedGame ? 'In library' : 'Purchase'}
                         </IonButton>
                         <IonLoading isOpen={isAddingGame} />
                         <IonToast

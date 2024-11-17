@@ -22,7 +22,7 @@ export default function Menu() {
                         fill="outline"
                         expand="block"
                         color="medium"
-                        routerLink="/library"
+                        routerLink="/user/library"
                     >
                         Library
                     </IonButton>

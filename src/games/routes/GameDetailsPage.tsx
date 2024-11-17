@@ -5,7 +5,7 @@ import Menu from '../../shared/Menu';
 import Header from '../../shared/Header';
 
 type Props = RouteComponentProps<{
-    id: string;
+    gameId: string;
 }>;
 
 export default function GameDetailsPage({ match }: Props) {
@@ -18,7 +18,7 @@ export default function GameDetailsPage({ match }: Props) {
                     title="Details"
                 />
                 <IonContent fullscreen>
-                    <GameDetails id={match.params.id} />
+                    <GameDetails gameId={match.params.gameId} />
                 </IonContent>
             </IonPage>
         </>

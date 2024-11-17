@@ -11,16 +11,15 @@ import '@ionic/react/css/display.css';
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
-import './theme/variables.css';
+import '../theme/variables.css';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import PrivateRoute from './auth/PrivateRoute';
-import GamesListPage from './games/routes/GamesListPage';
-import GameDetailsPage from './games/routes/GameDetailsPage';
-import OwnedGamesPage from './user/routes/OwnedGamesPage';
-import ScreenshotsPage from './user/routes/ScreenshotsPage';
-import LoginPage from './auth/routes/LoginPage';
+import PrivateRoute from '../auth/PrivateRoute';
+import GamesListPage from '../games/routes/GamesListPage';
+import GameDetailsPage from '../games/routes/GameDetailsPage';
+import OwnedGamesPage from '../user/routes/OwnedGamesPage';
+import LoginPage from '../auth/routes/LoginPage';
 
 setupIonicReact();
 
@@ -41,7 +40,7 @@ export default function App() {
                     />
                     <Route
                         exact
-                        path="/games/:gameId"
+                        path="/games/:id"
                         component={GameDetailsPage}
                     />
                     <Route
@@ -51,19 +50,10 @@ export default function App() {
                     />
                     <Route
                         exact
-                        path="/user/library"
+                        path="/library"
                         render={() => (
                             <PrivateRoute>
                                 <OwnedGamesPage />
-                            </PrivateRoute>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/user/screenshots/:gameId"
-                        render={(props) => (
-                            <PrivateRoute>
-                                <ScreenshotsPage {...props} />
                             </PrivateRoute>
                         )}
                     />

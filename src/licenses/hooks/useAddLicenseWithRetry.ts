@@ -1,27 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAddOwnedGameMutation } from '../service';
+import { useAddLicenseMutation } from '../service';
 import { useNetwork } from '../../shared/hooks/useNetwork';
 
-export default function useAddOwnedGameWithRetry() {
+export default function useAddLicenseWithRetry() {
     const [gameIdToAdd, setGameIdToAdd] = useState<string | null>(null);
     const [error, setError] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
     const networkStatus = useNetwork();
 
-    const [addGame, { isLoading: isAddingGame }] = useAddOwnedGameMutation();
+    const [addLicenseTrigger, { isLoading: isAddingGame }] = useAddLicenseMutation();
 
-    const addUserGame = useCallback(
+    const addLicense = useCallback(
         async (gameId: string) => {
             try {
                 setSuccess(false);
-                await addGame({ gameId }).unwrap();
+                await addLicenseTrigger({ gameId }).unwrap();
                 setSuccess(true);
             } catch (error) {
                 setGameIdToAdd(gameId);
                 setError(true);
             }
         },
-        [addGame]
+        [addLicenseTrigger]
     );
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function useAddOwnedGameWithRetry() {
 
         const retryAddGame = async (gameId: string) => {
             try {
-                await addGame({ gameId }).unwrap();
+                await addLicenseTrigger({ gameId }).unwrap();
                 setGameIdToAdd(null);
                 setError(false);
                 setSuccess(true);
@@ -43,10 +43,10 @@ export default function useAddOwnedGameWithRetry() {
         }
 
         return () => window.clearInterval(interval);
-    }, [addGame, gameIdToAdd, networkStatus.connected]);
+    }, [addLicenseTrigger, gameIdToAdd, networkStatus.connected]);
 
     return {
-        addUserGame,
+        addLicense,
         isAddingGame,
         error,
         success,

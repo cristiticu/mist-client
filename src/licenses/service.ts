@@ -1,14 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_BASE_URL } from '../config';
 import { prepareHeaders } from '../auth/utils/prepareHeaders';
-import { License, AddLicenseParams, OwnedGame } from './types';
+import { License, AddLicenseParams } from './types';
+import { Game } from '../games/types';
 
 export const licensesApi = createApi({
     reducerPath: 'licensesApi',
 
     keepUnusedDataFor: 3600,
 
-    tagTypes: ['OwnedGames'],
+    tagTypes: ['License', 'OwnedGame'],
 
     baseQuery: fetchBaseQuery({
         baseUrl: BACKEND_BASE_URL,
@@ -16,7 +17,7 @@ export const licensesApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        fetchOwnedGames: builder.query<OwnedGame[], void>({
+        fetchLicenses: builder.query<Game[], void>({
             query: () => {
                 return {
                     method: 'GET',
@@ -24,10 +25,10 @@ export const licensesApi = createApi({
                 };
             },
 
-            providesTags: [{ type: 'OwnedGames', id: 'LIST' }],
+            providesTags: [{ type: 'License', id: 'LIST' }],
         }),
 
-        addOwnedGame: builder.mutation<License, AddLicenseParams>({
+        addLicense: builder.mutation<License, AddLicenseParams>({
             query: (args) => {
                 const { gameId } = args;
                 return {
@@ -36,9 +37,20 @@ export const licensesApi = createApi({
                 };
             },
 
-            invalidatesTags: [{ type: 'OwnedGames', id: 'LIST' }],
+            invalidatesTags: [{ type: 'License', id: 'LIST' }],
+        }),
+
+        fetchOwnedGames: builder.query<Game[], void>({
+            query: () => {
+                return {
+                    method: 'GET',
+                    url: '/license/owned-games',
+                };
+            },
+
+            providesTags: [{ type: 'OwnedGame', id: 'LIST' }],
         }),
     }),
 });
 
-export const { useFetchOwnedGamesQuery, useAddOwnedGameMutation } = licensesApi;
+export const { useFetchLicensesQuery, useFetchOwnedGamesQuery, useAddLicenseMutation } = licensesApi;
