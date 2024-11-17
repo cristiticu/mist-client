@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_BASE_URL, BACKEND_WEBSOCKET_URL } from '../../config';
+import { BACKEND_BASE_URL } from '../../config';
 import { FetchGameParams, FetchGamesParams, Game } from './types';
 
 export const gamesApi = createApi({
@@ -21,7 +21,7 @@ export const gamesApi = createApi({
                 };
             },
 
-            providesTags: (result, error, args) => [{ type: 'Game', id: '*' }],
+            providesTags: () => [{ type: 'Game', id: '*' }],
 
             // serializeQueryArgs: () => {
             //     return '';
