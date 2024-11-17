@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_BASE_URL } from '../config';
 import { prepareHeaders } from '../auth/utils/prepareHeaders';
-import { License, AddLicenseParams } from './types';
+import { License, AddLicenseParams, UpdateLicenseParams } from './types';
 import { Game } from '../games/types';
 
 export const licensesApi = createApi({
@@ -40,11 +40,28 @@ export const licensesApi = createApi({
             invalidatesTags: [{ type: 'License', id: 'LIST' }],
         }),
 
+        updateLicense: builder.mutation<License, UpdateLicenseParams>({
+            query: (args) => {
+                const { game_id, ...rest } = args;
+
+                return {
+                    method: 'PATCH',
+                    url: `/license/${game_id}`,
+                    body: rest,
+                };
+            },
+
+            invalidatesTags: [
+                { type: 'License', id: 'LIST' },
+                { type: 'OwnedGame', id: 'LIST' },
+            ],
+        }),
+
         fetchOwnedGames: builder.query<Game[], void>({
             query: () => {
                 return {
                     method: 'GET',
-                    url: '/license/owned-games',
+                    url: '/license/aggregate/owned-games',
                 };
             },
 
@@ -53,4 +70,4 @@ export const licensesApi = createApi({
     }),
 });
 
-export const { useFetchLicensesQuery, useFetchOwnedGamesQuery, useAddLicenseMutation } = licensesApi;
+export const { useFetchLicensesQuery, useFetchOwnedGamesQuery, useAddLicenseMutation, useUpdateLicenseMutation } = licensesApi;

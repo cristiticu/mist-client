@@ -16,6 +16,8 @@ export function usePhotos() {
     const { readFile, writeFile, deleteFile } = useFilesystem();
     const { get, set } = usePreferences();
 
+    const PHOTOS_KEY = `${PHOTOS_PREFERENCES_KEY}`;
+
     const takePhoto = useCallback(async () => {
         const data = await getPhoto();
         const filepath = new Date().getTime() + '.jpeg';
@@ -26,23 +28,23 @@ export function usePhotos() {
         const newPhoto = { filepath, webviewPath };
         const newPhotos = [newPhoto, ...photos];
 
-        await set(PHOTOS_PREFERENCES_KEY, JSON.stringify(newPhotos.map((p) => ({ filepath: p.filepath }))));
+        await set(PHOTOS_KEY, JSON.stringify(newPhotos.map((p) => ({ filepath: p.filepath }))));
         setPhotos(newPhotos);
-    }, [getPhoto, photos, set, writeFile]);
+    }, [PHOTOS_KEY, getPhoto, photos, set, writeFile]);
 
     const deletePhoto = useCallback(
         async (photo: UserPhoto) => {
             const newPhotos = photos.filter((p) => p.filepath !== photo.filepath);
-            await set(PHOTOS_PREFERENCES_KEY, JSON.stringify(newPhotos));
+            await set(PHOTOS_KEY, JSON.stringify(newPhotos));
             await deleteFile(photo.filepath);
             setPhotos(newPhotos);
         },
-        [deleteFile, photos, set]
+        [PHOTOS_KEY, deleteFile, photos, set]
     );
 
     useEffect(() => {
         const loadSavedPhotos = async () => {
-            const savedPhotoString = await get(PHOTOS_PREFERENCES_KEY);
+            const savedPhotoString = await get(PHOTOS_KEY);
             const savedPhotos: UserPhoto[] = savedPhotoString ? JSON.parse(savedPhotoString) : [];
 
             for (const photo of savedPhotos) {
@@ -54,7 +56,7 @@ export function usePhotos() {
         };
 
         loadSavedPhotos();
-    }, [get, readFile]);
+    }, [PHOTOS_KEY, get, readFile]);
 
     return {
         photos,

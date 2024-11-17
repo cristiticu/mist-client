@@ -10,3 +10,8 @@ export type License = {
 export type AddLicenseParams = {
     gameId: string;
 };
+
+export type UpdateLicenseParams = {
+    game_id: string;
+    custom_image_src: string;
+};
