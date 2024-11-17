@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_BASE_URL } from '../../config';
+import { BACKEND_BASE_URL } from '../config';
 import { FetchGameParams, FetchGamesParams, Game } from './types';
 
 export const gamesApi = createApi({
@@ -21,7 +21,7 @@ export const gamesApi = createApi({
                 };
             },
 
-            providesTags: () => [{ type: 'Game', id: '*' }],
+            providesTags: () => [{ type: 'Game', id: 'LIST' }],
 
             // serializeQueryArgs: () => {
             //     return '';
@@ -50,7 +50,7 @@ export const gamesApi = createApi({
             //             const message = JSON.parse(event.data);
 
             //             if (message.type === 'notification') {
-            //                 dispatch(gamesApi.util.invalidateTags([{ type: 'Game', id: '*' }]));
+            //                 dispatch(gamesApi.util.invalidateTags([{ type: 'Game', id: 'LIST' }]));
             //             }
 
             //             if (message.type === 'heartbeat') {

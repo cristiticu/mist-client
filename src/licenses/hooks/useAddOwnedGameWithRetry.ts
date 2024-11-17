@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAddUserGameMutation } from '../service';
+import { useAddOwnedGameMutation } from '../service';
 import { useNetwork } from '../../shared/hooks/useNetwork';
 
-export default function useAddUserGameWithRetry() {
+export default function useAddOwnedGameWithRetry() {
     const [gameIdToAdd, setGameIdToAdd] = useState<string | null>(null);
     const [error, setError] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
     const networkStatus = useNetwork();
 
-    const [addGame, { isLoading: isAddingGame }] = useAddUserGameMutation();
+    const [addGame, { isLoading: isAddingGame }] = useAddOwnedGameMutation();
 
     const addUserGame = useCallback(
         async (gameId: string) => {

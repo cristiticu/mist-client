@@ -14,8 +14,8 @@ import {
     useIonRouter,
 } from '@ionic/react';
 import { useAppSelector } from '../store';
-import { useFetchUserGamesQuery } from '../user/service';
-import useAddUserGameWithRetry from '../user/hooks/useAddUserGameWithRetry';
+import { useFetchOwnedGamesQuery } from '../licenses/service';
+import useAddOwnedGameWithRetry from '../licenses/hooks/useAddOwnedGameWithRetry';
 import { useState } from 'react';
 
 type Props = {
@@ -29,10 +29,10 @@ export default function GameDetails({ id }: Props) {
 
     const token = useAppSelector((state) => state.auth.token);
 
-    const { data: userGames } = useFetchUserGamesQuery(undefined, { skip: !token });
+    const { data: ownedGames } = useFetchOwnedGamesQuery(undefined, { skip: !token });
     const { data: game } = useFetchGameQuery({ id });
 
-    const { addUserGame, isAddingGame, error, success } = useAddUserGameWithRetry();
+    const { addUserGame, isAddingGame, error, success } = useAddOwnedGameWithRetry();
 
     const handleBuyClicked = async () => {
         if (!token) {
@@ -44,7 +44,7 @@ export default function GameDetails({ id }: Props) {
     };
 
     const showDetails = !!game;
-    const userHasGame = !!userGames && !!userGames.find((game) => game.id === id);
+    const userHasGame = !!ownedGames && !!ownedGames.find((game) => game.id === id);
 
     return (
         <>

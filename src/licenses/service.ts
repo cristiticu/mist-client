@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_BASE_URL } from '../../config';
-import { Game } from '../games/types';
+import { BACKEND_BASE_URL } from '../config';
 import { prepareHeaders } from '../auth/utils/prepareHeaders';
-import { License, AddUserGameParams } from './types';
+import { License, AddLicenseParams, OwnedGame } from './types';
 
-export const userApi = createApi({
-    reducerPath: 'userApi',
+export const licensesApi = createApi({
+    reducerPath: 'licensesApi',
 
     keepUnusedDataFor: 3600,
 
-    tagTypes: ['UserGames'],
+    tagTypes: ['OwnedGames'],
 
     baseQuery: fetchBaseQuery({
         baseUrl: BACKEND_BASE_URL,
@@ -17,7 +16,7 @@ export const userApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        fetchUserGames: builder.query<Game[], void>({
+        fetchOwnedGames: builder.query<OwnedGame[], void>({
             query: () => {
                 return {
                     method: 'GET',
@@ -25,10 +24,10 @@ export const userApi = createApi({
                 };
             },
 
-            providesTags: ['UserGames'],
+            providesTags: [{ type: 'OwnedGames', id: 'LIST' }],
         }),
 
-        addUserGame: builder.mutation<License, AddUserGameParams>({
+        addOwnedGame: builder.mutation<License, AddLicenseParams>({
             query: (args) => {
                 const { gameId } = args;
                 return {
@@ -37,9 +36,9 @@ export const userApi = createApi({
                 };
             },
 
-            invalidatesTags: ['UserGames'],
+            invalidatesTags: [{ type: 'OwnedGames', id: 'LIST' }],
         }),
     }),
 });
 
-export const { useFetchUserGamesQuery, useAddUserGameMutation } = userApi;
+export const { useFetchOwnedGamesQuery, useAddOwnedGameMutation } = licensesApi;

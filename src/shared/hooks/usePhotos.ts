@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useCamera } from './useCamera';
 import { useFilesystem } from './useFilesystem';
 import { usePreferences } from './usePreferences';
-import { PHOTOS_PREFERENCES_KEY } from '../../../config';
+import { PHOTOS_PREFERENCES_KEY } from '../../config';
 
 export type UserPhoto = {
     filepath: string;

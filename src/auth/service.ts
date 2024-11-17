@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_BASE_URL } from '../../config';
+import { BACKEND_BASE_URL } from '../config';
 import { LoginResponse, LoginParams } from './types';
 import { login, logout } from './slice';
 

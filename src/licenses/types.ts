@@ -1,3 +1,5 @@
+import { Game } from '../games/types';
+
 export type License = {
     id: string;
     user_id: string;
@@ -6,6 +8,10 @@ export type License = {
     expires: string | null;
 };
 
-export type AddUserGameParams = {
+export type OwnedGame = Game & {
+    custom_display_image?: string | null;
+};
+
+export type AddLicenseParams = {
     gameId: string;
 };

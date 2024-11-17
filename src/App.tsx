@@ -11,14 +11,14 @@ import '@ionic/react/css/display.css';
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
-import '../theme/variables.css';
+import './theme/variables.css';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import PrivateRoute from './auth/PrivateRoute';
 import GamesListPage from './games/routes/GamesListPage';
 import GameDetailsPage from './games/routes/GameDetailsPage';
-import PrivateRoute from './auth/PrivateRoute';
-import MyGamesPage from './user/routes/MyGamesPage';
+import OwnedGamesPage from './licenses/routes/OwnedGamesPage';
 import LoginPage from './auth/routes/LoginPage';
 
 setupIonicReact();
@@ -53,7 +53,7 @@ export default function App() {
                         path="/library"
                         render={() => (
                             <PrivateRoute>
-                                <MyGamesPage />
+                                <OwnedGamesPage />
                             </PrivateRoute>
                         )}
                     />
