@@ -17,7 +17,7 @@ export const gamesApi = createApi({
                 const { limit, offset } = args;
                 return {
                     method: 'GET',
-                    url: `/games?limit=${limit}&offset=${offset}`,
+                    url: `/game?limit=${limit}&offset=${offset}`,
                 };
             },
 
@@ -76,7 +76,7 @@ export const gamesApi = createApi({
 
                 return {
                     method: 'GET',
-                    url: `/games/${id}`,
+                    url: `/game/${id}`,
                 };
             },
 

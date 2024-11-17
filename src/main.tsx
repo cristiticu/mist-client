@@ -10,7 +10,7 @@ const container = document.getElementById('root');
 
 const root = createRoot(container!);
 
-Preferences.get({ key: 'user' }).then((data) => {
+await Preferences.get({ key: 'user' }).then((data) => {
     if (data.value) {
         store.dispatch(login(data.value));
     }

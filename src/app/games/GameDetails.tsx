@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from '../store';
 import { useFetchUserGamesQuery } from '../user/service';
 import useAddUserGameWithRetry from '../user/hooks/useAddUserGameWithRetry';
+import { useState } from 'react';
 
 type Props = {
     id: string;
@@ -23,13 +24,15 @@ type Props = {
 
 export default function GameDetails({ id }: Props) {
     const { push } = useIonRouter();
+    const [errorDismissed, setErrorDismissed] = useState<boolean>(false);
+    const [successDismissed, setSuccessDismissed] = useState<boolean>(false);
+
     const token = useAppSelector((state) => state.auth.token);
+
     const { data: userGames } = useFetchUserGamesQuery(undefined, { skip: !token });
     const { data: game } = useFetchGameQuery({ id });
-    const { addUserGame, isAddingGame, error } = useAddUserGameWithRetry();
 
-    const showDetails = !!game;
-    const userHasGame = !!userGames && !!userGames.find((game) => game.id === id);
+    const { addUserGame, isAddingGame, error, success } = useAddUserGameWithRetry();
 
     const handleBuyClicked = async () => {
         if (!token) {
@@ -39,6 +42,9 @@ export default function GameDetails({ id }: Props) {
 
         addUserGame(id);
     };
+
+    const showDetails = !!game;
+    const userHasGame = !!userGames && !!userGames.find((game) => game.id === id);
 
     return (
         <>
@@ -62,30 +68,34 @@ export default function GameDetails({ id }: Props) {
                         <IonItem>
                             <IonLabel className="item-title">{game.description}</IonLabel>
                         </IonItem>
-
                         <IonItem>
                             <IonLabel className="item-title">Price: {game.price}</IonLabel>
                         </IonItem>
-
                         <IonItem>
                             <IonLabel className="item-title">
                                 Reviews: {game.positive_reviews} positive / {game.negative_reviews} negative
                             </IonLabel>
                         </IonItem>
-
                         <IonItem>
                             <IonLabel className="item-title">Added {dayjs(game.added_at).format('DD MMM YYYY')}</IonLabel>
                         </IonItem>
                         <IonButton
-                            disabled={userHasGame}
+                            disabled={userHasGame || error}
                             onClick={handleBuyClicked}
                         >
                             {userHasGame ? 'In library' : 'Purchase'}
                         </IonButton>
                         <IonLoading isOpen={isAddingGame} />
                         <IonToast
-                            isOpen={error}
-                            message="An error has occurred! The game was not bought. Retrying.."
+                            isOpen={error && !errorDismissed}
+                            onDidDismiss={() => setErrorDismissed(true)}
+                            message="An error has occurred! The game was not added to the library. Retrying.."
+                        />
+                        <IonToast
+                            isOpen={success && !successDismissed}
+                            onDidDismiss={() => setSuccessDismissed(true)}
+                            duration={5000}
+                            message="Game added to library"
                         />
                     </IonCardContent>
                 </IonCard>

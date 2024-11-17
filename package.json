@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.1",
     "scripts": {
-        "ionic": "[ `node -v` = \"v16.20.2\" ] && ~/.nvm/nvm use node; npx ionic serve --host=0.0.0.0 --port=8100",
+        "ionic": "[ `node -v` = \"v16.20.2\" ] && ~/.nvm/nvm use node; npx ionic serve -w chrome --host=0.0.0.0 --port=8100",
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",

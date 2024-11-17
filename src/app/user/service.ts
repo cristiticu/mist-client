@@ -21,7 +21,7 @@ export const userApi = createApi({
             query: () => {
                 return {
                     method: 'GET',
-                    url: '/user/my-games',
+                    url: '/license',
                 };
             },
 
@@ -33,7 +33,7 @@ export const userApi = createApi({
                 const { gameId } = args;
                 return {
                     method: 'POST',
-                    url: `/user/add-game?game_id=${gameId}`,
+                    url: `/license?game_id=${gameId}`,
                 };
             },
 
