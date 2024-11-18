@@ -37,7 +37,10 @@ export const licensesApi = createApi({
                 };
             },
 
-            invalidatesTags: [{ type: 'License', id: 'LIST' }],
+            invalidatesTags: [
+                { type: 'License', id: 'LIST' },
+                { type: 'OwnedGame', id: 'LIST' },
+            ],
         }),
 
         updateLicense: builder.mutation<License, UpdateLicenseParams>({

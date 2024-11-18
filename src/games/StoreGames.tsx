@@ -1,11 +1,13 @@
 import './Games.css';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonImg, IonRow } from '@ionic/react';
-import { useState } from 'react';
+import { createAnimation, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonImg, IonRow } from '@ionic/react';
+import { useEffect, useRef, useState } from 'react';
 import { useFetchGamesQuery } from './service';
 
 export default function StoreGames() {
     const [currentOffset, setCurrentOffset] = useState<number>(0);
     const { data: games } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
+
+    const gameCardElement = useRef(null);
 
     const handlePageClicked = (direction: 'next' | 'previous') => {
         if (direction === 'next') {
@@ -15,12 +17,28 @@ export default function StoreGames() {
         }
     };
 
+    useEffect(() => {
+        const playAnimation = async () => {
+            if (gameCardElement.current) {
+                const gameCardAnimation = createAnimation()
+                    .addElement(gameCardElement.current)
+                    .duration(1000)
+                    .fromTo('transform', 'translateX(100px)', 'translateX(0px)')
+                    .fromTo('opacity', '0.2', '1');
+
+                await gameCardAnimation.play();
+            }
+        };
+
+        playAnimation();
+    }, []);
+
     return (
         <IonCard className="games-list-card">
             <IonCardHeader>
                 <IonCardTitle>Available games</IonCardTitle>
             </IonCardHeader>
-            <IonCardContent>
+            <IonCardContent ref={gameCardElement}>
                 {games && (
                     <IonGrid>
                         <IonRow>
