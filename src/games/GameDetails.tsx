@@ -13,7 +13,6 @@ import {
     IonToast,
     useIonRouter,
     IonImg,
-    createAnimation,
 } from '@ionic/react';
 import { useAppSelector } from '../store';
 import { useFetchOwnedGamesQuery } from '../licenses/service';
@@ -45,13 +44,13 @@ export default function GameDetails({ gameId }: Props) {
         addLicense(gameId);
     };
 
-    const toastEnterAnimation = (baseEl: HTMLElement) => {
-        return createAnimation()
-            .addElement(baseEl)
-            .fromTo('opacity', '0.01', '1')
-            .fromTo('transform', 'translateX(-1000px)', 'translateX(1000px)')
-            .duration(2000);
-    };
+    // const toastEnterAnimation = (baseEl: HTMLElement) => {
+    //     return createAnimation()
+    //         .addElement(baseEl)
+    //         .fromTo('opacity', '0.01', '1')
+    //         .fromTo('transform', 'translateX(-1000px)', 'translateX(1000px)')
+    //         .duration(2000);
+    // };
 
     const showDetails = !!game;
     const ownedGame = ownedGames?.find((game) => game.id === gameId);
@@ -97,13 +96,11 @@ export default function GameDetails({ gameId }: Props) {
                         </IonButton>
                         <IonLoading isOpen={isAddingGame} />
                         <IonToast
-                            enterAnimation={toastEnterAnimation}
                             isOpen={error && !errorDismissed}
                             onDidDismiss={() => setErrorDismissed(true)}
                             message="An error has occurred! The game was not added to the library. Retrying.."
                         />
                         <IonToast
-                            enterAnimation={toastEnterAnimation}
                             isOpen={success && !successDismissed}
                             onDidDismiss={() => setSuccessDismissed(true)}
                             duration={5000}
