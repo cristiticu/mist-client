@@ -3,17 +3,19 @@ import { createAnimation, IonButton, IonCard, IonCardContent, IonCardHeader, Ion
 import { useEffect, useRef, useState } from 'react';
 import { useFetchGamesQuery } from './service';
 
+const GAMES_ON_PAGE = 4;
+
 export default function StoreGames() {
     const [currentOffset, setCurrentOffset] = useState<number>(0);
-    const { data: games } = useFetchGamesQuery({ offset: currentOffset, limit: 5 });
+    const { data: games } = useFetchGamesQuery({ offset: currentOffset, limit: GAMES_ON_PAGE });
 
     const gameCardElement = useRef(null);
 
     const handlePageClicked = (direction: 'next' | 'previous') => {
         if (direction === 'next') {
-            setCurrentOffset(currentOffset + 5);
+            setCurrentOffset(currentOffset + GAMES_ON_PAGE);
         } else {
-            setCurrentOffset(currentOffset - 5);
+            setCurrentOffset(currentOffset - GAMES_ON_PAGE);
         }
     };
 
@@ -68,7 +70,7 @@ export default function StoreGames() {
                     Previous
                 </IonButton>
                 <IonButton
-                    disabled={games && games.length < 5}
+                    disabled={games && games.length < GAMES_ON_PAGE}
                     onClick={() => handlePageClicked('next')}
                 >
                     Next
